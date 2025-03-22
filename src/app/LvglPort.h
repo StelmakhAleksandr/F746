@@ -4,6 +4,8 @@
 #include "Touch.h"
 #include "lvgl.h"
 
+#include "gui/MainGui.h"
+
 class LvglPort
 {
 public:
@@ -18,4 +20,6 @@ private:
     Lcd m_lcd;
     Touch m_touch;
     std::vector<std::shared_ptr<PixelContainer>> m_buffers;
+
+    MainGui m_gui;
 };

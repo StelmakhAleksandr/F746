@@ -132,7 +132,8 @@ void LvglPort::setupTouchDriver(const TouchConfig& touchConfig)
 
 void LvglPort::run()
 {
-    lv_demo_benchmark();
+    m_gui.run();
+    // lv_demo_benchmark();
 }
 
 void LvglPort::lvglTimerTask()

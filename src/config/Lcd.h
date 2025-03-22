@@ -55,8 +55,8 @@ inline LcdConfig lcd()
         .verticalSyncPolarity = false,
         .noDataEnablePolarity = false,
         .pixelClockPolarity = false,
-        .layer = LTDC_Layer1,
-        .format = LayerFormat::ARGB8888,
+        .layer = LTDC_Layer2,
+        .format = LayerFormat::RGB565,
         .allocator = AllocatorType::SDRAM
     };
 }
