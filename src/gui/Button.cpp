@@ -1,36 +1,49 @@
 #include "Button.h"
 
-void Button::buttonEventHandler(lv_event_t* e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    void* data = lv_event_get_user_data(e);
-    Button* button = ((Button*)data);
-    if (code == LV_EVENT_CLICKED) {
-        if (button->m_onClicked) {
-            button->m_onClicked();
-        }
-    }
-}
-
 Button::Button(lv_obj_t* parent)
 {
-    m_obj = lv_button_create(parent);
-    m_label = lv_label_create(m_obj);
-    lv_obj_add_event_cb(m_obj, buttonEventHandler, LV_EVENT_ALL, this);
+    m_button = lv_btn_create(parent);
+    m_label = lv_label_create(m_button);
 }
 
-void Button::setAlign(lv_align_t align, int32_t x_ofs, int32_t y_ofs)
+Button::~Button()
 {
-    lv_obj_align(m_obj, align, x_ofs, y_ofs);
+    lv_obj_del(m_button);
 }
 
 void Button::setText(const std::string& text)
 {
     lv_label_set_text(m_label, text.c_str());
+}
+
+void Button::setSize(int width, int height)
+{
+    lv_obj_set_size(m_button, width, height);
+}
+
+void Button::setAlignment(lv_align_t align, int xOffset, int yOffset)
+{
+    lv_obj_align(m_button, align, xOffset, yOffset);
+}
+
+void Button::setCallback(lv_event_code_t eventCode, std::function<void(lv_event_t*)> callback)
+{
+    m_callback = std::move(callback);
+    lv_obj_add_event_cb(m_button, [](lv_event_t* e) {
+        auto* btn = static_cast<Button*>(lv_event_get_user_data(e));
+        if (btn->m_callback) {
+            btn->m_callback(e); 
+        } }, eventCode, this);
+}
+
+void Button::setTextAlignment(lv_text_align_t align)
+{
+    lv_label_set_long_mode(m_label, LV_LABEL_LONG_WRAP);
+    lv_obj_set_style_text_align(m_label, align, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_center(m_label);
 }
 
-void Button::setOnClicked(std::function<void()> func)
+void Button::setFont(const lv_font_t* font)
 {
-    m_onClicked = func;
+    lv_obj_set_style_text_font(m_label, font, LV_PART_MAIN | LV_STATE_DEFAULT);
 }

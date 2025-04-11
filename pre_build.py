@@ -3,7 +3,7 @@ Import("env")
 def generate_pins():
     ports = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
     pins = range(16)
-    with open('src/periph/Pins.h', 'w') as file:
+    with open('src/stmcmp/periph/Pins.h', 'w') as file:
         file.write('#pragma once \n\n#include "Gpio.h"\n\n')
         for i, port in enumerate(ports):
             for pin in pins:
