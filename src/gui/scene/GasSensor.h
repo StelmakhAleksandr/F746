@@ -91,12 +91,12 @@ public:
     void calib()
     {
         // Калібрування
-        // float rl = 10.0f; // номінальний опір навантаження (на платі MQ-2)
-        // float volts = readVoltage();
-        // float rs = rl * (3.3f - volts) / volts;
-        // float ro = rs / 9.8f;
-        // printf("Ro = %d\n", int(ro * 1000));
-        // setRo(ro);
+        float rl = 10.0f; // номінальний опір навантаження (на платі MQ-2)
+        float volts = readVoltage();
+        float rs = rl * (3.3f - volts) / volts;
+        float ro = rs / 9.8f;
+        printf("Ro = %d\n", int(ro * 1000));
+        setRo(ro);
     }
 
     [[nodiscard]] bool isTriggered() const

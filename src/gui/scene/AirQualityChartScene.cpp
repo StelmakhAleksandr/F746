@@ -32,7 +32,7 @@ void AirQualityChartScene::create()
     lv_color_t c = lv_palette_main(LV_PALETTE_LIGHT_GREEN);
     m_series = lv_chart_add_series(m_chart, c, LV_CHART_AXIS_PRIMARY_Y);
     m_sceneManager->subscribe([this]() {
-        printf("airQuality: %d\n", m_sceneManager->airQuality().size());
+        // printf("airQuality: %d\n", m_sceneManager->airQuality().size());
         updateData(m_sceneManager->airQuality());
     });
     updateData(m_sceneManager->airQuality());

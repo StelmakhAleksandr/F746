@@ -34,7 +34,7 @@ void TemperatureChartScene::create()
     lv_color_t c = lv_palette_main(LV_PALETTE_RED);
     m_series = lv_chart_add_series(m_chart, c, LV_CHART_AXIS_PRIMARY_Y);
     m_sceneManager->subscribe([this]() {
-        printf("Temperature: %d\n", m_sceneManager->temperature().size());
+        // printf("Temperature: %d\n", m_sceneManager->temperature().size());
         updateData(m_sceneManager->temperature());
     });
     updateData(m_sceneManager->temperature());

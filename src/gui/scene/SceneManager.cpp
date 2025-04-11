@@ -43,22 +43,31 @@ SceneManager::SceneManager()
 
     NVIC_EnableIRQ(TIM5_IRQn);
 
-    m_gasSensor.init();
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+    GPIOA->MODER |= GPIO_MODER_MODER0_0 | GPIO_MODER_MODER0_1;
+    GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPDR0_0 | GPIO_PUPDR_PUPDR0_1);
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOFEN;
     GPIOF->MODER |= (3U << (10 * 2));
     GPIOF->PUPDR &= ~(3U << (10 * 2));
-    m_lm35Sensor.init();
+
+    m_gasSensor.init();
+    m_gasSensor.calib();
 
     m_timer = lv_timer_create([](lv_timer_t* timer) {
         SceneManager* manager = static_cast<SceneManager*>(lv_timer_get_user_data(timer));
-        // manager->m_temperature.push_back(rand() % 100);
 
-        manager->m_humidity.push_back(rand() % 100);
-
+        manager->m_lm35Sensor.init();
+        int temp = manager->m_lm35Sensor.readRaw();
+        printf("Temperature: %d  ADC = %d\n", (int)manager->m_lm35Sensor.readCelsius(), temp);
         manager->m_temperature.push_back(manager->m_lm35Sensor.readCelsius());
 
-        int ppm = manager->m_gasSensor.readPpm();
-        manager->m_airQuality.push_back(ppm);
+        manager->m_gasSensor.init();
+
+        int airQuality = manager->m_gasSensor.readRaw();
+        printf("Air Quality: %d ADC %d\n", (int)manager->m_gasSensor.readPpm(), airQuality);
+        manager->m_airQuality.push_back(manager->m_gasSensor.readPpm());
+
+        manager->m_humidity.push_back(62 + std::rand() % 2);
 
         if (manager->m_function) {
             manager->m_function();
