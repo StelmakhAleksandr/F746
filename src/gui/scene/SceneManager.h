@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "GasSensor.h"
+#include "Lm35Sensor.h"
 #include "stmcmp/stmcmp.h"
 
 class SceneManager
@@ -48,4 +49,5 @@ private:
     std::unique_ptr<Scene> m_currentScene;
     lv_timer_t* m_timer;
     GasSensor m_gasSensor;
+    Lm35Sensor m_lm35Sensor;
 };
